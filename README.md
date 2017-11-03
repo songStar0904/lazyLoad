@@ -17,4 +17,11 @@
 data-role: 标记图片引入lazyLoad 懒加载
 data-src： 要加载的图片
 ```
+### 参数
+```javascript
+var lazyLoad = new LazyLoad({
+			top: 80, // 距离低端多少px开始加载图片
+			delay: 100 // 节流延迟（鼠标滚动停止delay开始判断加载图片）
+		});
+```          
 ## 注意事项
