@@ -30,7 +30,27 @@ LazyLoad.prototype = {
 	loadImg: function(item) {
 		if (!item.getAttribute('src')) {
 			let src = item.dataset.src; // 赋值data-src
-			item.src = src;
+			// item.src = src;
+			this.preLoadImg(item, src, function(){
+				console.log('complete: ' + item.src);
+			})
+		}
+	},
+	// 预加载图片
+	preLoadImg: function(img, src, callback) {
+		img.src = src;
+		if (!!window.ActiveXObject) {
+			// ie
+			img.onrendystatechange = function(){
+				if (this.readyState == 'complete') {
+					callback();
+				}
+			}
+		} else {
+			// 非ie
+			img.onload = function() {
+				callback();
+			}
 		}
 	},
 	// 是否在可见范围
