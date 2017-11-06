@@ -30,14 +30,16 @@ LazyLoad.prototype = {
 	loadImg: function(item) {
 		if (!item.getAttribute('src')) {
 			let src = item.dataset.src; // 赋值data-src
-			// item.src = src;
-			this.preLoadImg(item, src, function(){
+			this.preLoadImg(src, function(){
+				item.src = src;
 				console.log('complete: ' + item.src);
 			})
 		}
 	},
 	// 预加载图片
-	preLoadImg: function(img, src, callback) {
+	preLoadImg: function(src, callback) {
+		var img = new Image();
+		img.src = src;
 		if (!!window.ActiveXObject) {
 			// ie
 			img.onrendystatechange = function(){
@@ -51,7 +53,10 @@ LazyLoad.prototype = {
 				callback();
 			}
 		}
+<<<<<<< HEAD
                 img.src = src;
+=======
+>>>>>>> 完善预加载图片
 	},
 	// 是否在可见范围
 	isShow: function(item) {

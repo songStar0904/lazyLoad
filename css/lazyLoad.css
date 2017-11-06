@@ -2,11 +2,9 @@
 	width: 600px;
 	height: 400px;
 	margin: 50px auto;
+	background: url('../img/loading.gif') no-repeat center center;
 }
 .img-area img{
 	width: 100%;
 	height: 100%;
-}
-img[data-role=LazyLoad]{
-	background: url('../img/loading.gif') no-repeat center center;
 }
