@@ -38,7 +38,6 @@ LazyLoad.prototype = {
 	},
 	// 预加载图片
 	preLoadImg: function(img, src, callback) {
-		img.src = src;
 		if (!!window.ActiveXObject) {
 			// ie
 			img.onrendystatechange = function(){
@@ -52,6 +51,7 @@ LazyLoad.prototype = {
 				callback();
 			}
 		}
+                img.src = src;
 	},
 	// 是否在可见范围
 	isShow: function(item) {
