@@ -1,30 +1,50 @@
-function LazyLoad(opt = {
-	top: 50,
-	delay: 100
-}){
+function LazyLoad(opt){
+	this.opt = {top: 0, delay: 100};
 	this.data = Array.from(document.querySelectorAll('img[data-role=LazyLoad]'));
 	this.winHeight = window.innerHeight;
 	this.timer = null;
 	this.opt = opt;
+	this.observer = typeof IntersectionObserver;
 	this.init();
 	
 }
 LazyLoad.prototype = {
 	//  初始化函数
 	init: function(){
-		this.checkImgs();
-		window.addEventListener('scroll', () => {
-			this.throttle(this.checkImgs, this)
-		});
+		if (this.observer === 'function') {
+			this.observer = new IntersectionObserver(
+				(entries) => {
+				  entries.forEach((entry) => {
+				     if (entry.intersectionRatio > 0 && entry.intersectionRatio <= 1) {
+				     	let item = entry.target
+				     	this.loadImg(item)
+		                this.observer.unobserve(item);
+		             }   
+				  });
+				}
+			);
+			this.checkImgsByObserver();
+		} else {
+			this.checkImgsByClient();
+			window.addEventListener('scroll', () => {
+				this.throttle(this.checkImgsByClient, this)
+			});
+		}
+		console.log(this)
 	},
-	// 判断图片
-	checkImgs: function() {
-		// console.log(this)
+	// 用getBoundingClientRect判断图片
+	checkImgsByClient: function() {
 		this.data.forEach((item) => {
 			if(this.isShow(item)){
 				this.loadImg(item)
 			}
-		})
+		});
+	},
+	// 用IntersectionObserver判断图片是否可见
+	checkImgsByObserver: function() {
+	    this.data.forEach((item) => {
+	    	this.observer.observe(item);
+	    })
 	},
 	// 加载图片
 	loadImg: function(item) {
@@ -53,10 +73,6 @@ LazyLoad.prototype = {
 				callback();
 			}
 		}
-<<<<<<< HEAD
-                img.src = src;
-=======
->>>>>>> 完善预加载图片
 	},
 	// 是否在可见范围
 	isShow: function(item) {
